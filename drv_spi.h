@@ -53,10 +53,31 @@ void APP_ReceiveMessage_Tasks(void);
 #define DRV_CANFDSPI_INDEX_0         0
 #define DRV_CANFDSPI_INDEX_1         1
 
-const int slaveSelectPin = 15;
-const int int_pin = 9;
-const int int0_pin = 16;    // Requires SB1 be made
-const int int1_pin = 17;    // Requries SB2 be made
+//#define REV_A_BOARD
+#define REV_B_BOARD
+
+#ifdef REV_A_BOARD
+
+  #define MISO_PIN    8  
+  #define CLK_PIN     14
+  #define MOSI_PIN    7
+  const int slaveSelectPin = 15;
+  const int int_pin = 9;
+  const int int0_pin = 17;    // Requires SB1 be made
+  const int int1_pin = 16;    // Requries SB2 be made
+
+#else if  REV_B_BOARD
+
+  #define MISO_PIN    12  
+  #define CLK_PIN     13
+  #define MOSI_PIN    11
+  const int slaveSelectPin = 10;
+  const int int_pin = 9;
+  const int int0_pin = 17;    // Requires SB1 be made
+  const int int1_pin = 16;    // Requries SB2 be made
+
+#endif
+ 
 
 //! SPI Initialization
     

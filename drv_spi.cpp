@@ -18,9 +18,16 @@ void DRV_SPI_Initialize()
    
    digitalWrite(slaveSelectPin,HIGH); 
 
-   SPI.setMISO(8);       // SCK on pin 14
+   SPI.setMISO(12);       // SCK on pin 14
+   SPI.setSCK(13);       // SCK on pin 13
+   SPI.setMOSI(11);
+
+
+/*
+       SPI.setMISO(8);       // SCK on pin 14
    SPI.setSCK(14);       // SCK on pin 13
    SPI.setMOSI(7);
+  */
     
    SPI.begin();
    SPI.setClockDivider(SPI_CLOCK_DIV2);  
@@ -51,6 +58,8 @@ int8_t DRV_SPI_TransferData(uint8_t spiSlaveDeviceIndex, uint8_t *SpiTxData, uin
 CAN_RX_FIFO_EVENT rxFlags;
 extern CAN_RX_MSGOBJ rxObj;
 extern uint8_t rxd[MAX_DATA_BYTES];
+
+
 void APP_ReceiveMessage_Tasks(void)
 {
 
