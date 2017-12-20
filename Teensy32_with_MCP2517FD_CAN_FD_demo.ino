@@ -19,7 +19,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-int i;
+volatile uint32_t can_msg_count = 0;
 
 extern uint8_t txd[MAX_DATA_BYTES];
 extern CAN_TX_MSGOBJ txObj;
@@ -66,7 +66,13 @@ void loop() {
 
 
   APP_TransmitMessageQueue(); // Send out CAN FD frame
-  txd[7]= i++;
+
+  txd[4] = can_msg_count >> 24;
+  txd[5] = can_msg_count >> 16;
+  txd[6] = can_msg_count >> 8;
+  txd[7] = can_msg_count;
+
+  can_msg_count++;
   
   delay(1);
 
