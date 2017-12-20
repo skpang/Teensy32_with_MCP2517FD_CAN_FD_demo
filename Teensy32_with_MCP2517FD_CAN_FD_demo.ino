@@ -2,7 +2,8 @@
  * Teensy 3.2 with MCP2517FD CAN FD demo
  * http://skpang.co.uk/catalog/mcp2517fd-can-fd-breakout-with-teensy-include-teensy-32-p-1549.html
  * 
- * 
+ * Optional OLED display:
+ * http://skpang.co.uk/catalog/oled-128x64-display-for-teensy-breakout-board-p-1508.html
  * 
  * v1.0 December 2017
  * 
@@ -33,11 +34,10 @@ Adafruit_SSD1306 display(OLED_RESET);
 
 
 void setup() {
-  
-  
+
   delay(1000);
   display.begin(SSD1306_SWITCHCAPVCC, 0x3D);  // initialize with the I2C addr 0x3D (for the 128x64)
-    display.display();
+  display.display();
   display.clearDisplay();
   display.setTextSize(0);
   display.setTextColor(WHITE);
@@ -48,12 +48,16 @@ void setup() {
   display.println(" ");
   display.println(" 121/17");
   display.display();
-  
-    
+      
   Serial.println(F("CAN Bus Tx test"));
-  APP_CANFDSPI_Init(CAN_500K_2M);
-  //
+ 
+  APP_CANFDSPI_Init(CAN_500K_2M);       // 500k arbitration rate and 2Mbps data rate
   
+  txObj.bF.ctrl.IDE = 0;      // Extended CAN ID false
+  txObj.bF.id.SID = 0x7df;    // CAN ID
+  txObj.bF.ctrl.BRS = 1;      // Switch Bitrate true (switch to 2Mbps)
+  txObj.bF.ctrl.FDF = 1;      // CAN FD true
+  txObj.bF.ctrl.DLC = 8;      // Data length
    
 }
 
@@ -61,21 +65,14 @@ void setup() {
 void loop() {
 
 
-  
-  txObj.bF.ctrl.IDE = 0;
-  txObj.bF.id.SID = 0x7df;
-  txObj.bF.ctrl.BRS = 0;
-  txObj.bF.ctrl.FDF = 1;
-  txObj.bF.ctrl.DLC = 8;
-  APP_TransmitMessageQueue();
+  APP_TransmitMessageQueue(); // Send out CAN FD frame
   txd[7]= i++;
   
- 
-
   delay(1);
 
-  if(digitalRead(int1_pin) == 0)
+  if(digitalRead(int1_pin) == 0)  // Read int1 pin on MCP2517FD
   {
+    // It is low read out the data
     APP_ReceiveMessage_Tasks();
     
   }
