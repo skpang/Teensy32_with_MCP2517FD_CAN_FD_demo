@@ -189,7 +189,7 @@ void APP_TransmitMessageQueue(void)
 
 
   // Load message and transmit
- uint8_t n = 8 ;//DRV_CANFDSPI_DlcToDataBytes(txObj.bF.ctrl.DLC);
+ uint8_t n = DRV_CANFDSPI_DlcToDataBytes(txObj.bF.ctrl.DLC);
 
     DRV_CANFDSPI_TransmitChannelLoad(DRV_CANFDSPI_INDEX_0, APP_TX_FIFO, &txObj, txd, n, true);
 
