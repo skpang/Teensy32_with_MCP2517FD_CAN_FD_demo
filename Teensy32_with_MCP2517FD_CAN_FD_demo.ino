@@ -52,12 +52,20 @@ void setup() {
   Serial.println(F("CAN Bus Tx test"));
  
   APP_CANFDSPI_Init(CAN_500K_2M);       // 500k arbitration rate and 2Mbps data rate
+  // APP_CANFDSPI_Init(CAN_500K_4M);       // 500k arbitration rate and 2Mbps data rate
+ //  APP_CANFDSPI_Init(CAN_500K_8M);       // 500k arbitration rate and 2Mbps data rate
+
+
+  
   
   txObj.bF.ctrl.IDE = 0;      // Extended CAN ID false
   txObj.bF.id.SID = 0x7df;    // CAN ID
   txObj.bF.ctrl.BRS = 1;      // Switch Bitrate true (switch to 2Mbps)
   txObj.bF.ctrl.FDF = 1;      // CAN FD true
-  txObj.bF.ctrl.DLC = 8;      // Data length
+  txObj.bF.ctrl.DLC = 15;      // Data length
+txd[4] = can_msg_count;
+  delay(10);
+   APP_TransmitMessageQueue();
    
 }
 
@@ -65,24 +73,24 @@ void setup() {
 void loop() {
 
 
-  APP_TransmitMessageQueue(); // Send out CAN FD frame
+//APP_TransmitMessageQueue(); // Send out CAN FD frame
 
-  txd[4] = can_msg_count >> 24;
+ txd[4] = can_msg_count >> 24;
   txd[5] = can_msg_count >> 16;
-  txd[6] = can_msg_count >> 8;
-  txd[7] = can_msg_count;
+ txd[6] = can_msg_count >> 8;
+ txd[7] = can_msg_count;
 
-  can_msg_count++;
+ // can_msg_count++;
   
-  delay(1);
+ 
 
-  if(digitalRead(int1_pin) == 0)  // Read int1 pin on MCP2517FD
+  if(digitalReadFast(int1_pin) == 0)  // Read int1 pin on MCP2517FD
   {
     // It is low read out the data
     APP_ReceiveMessage_Tasks();
     
   }
-  
+ 
 
   
 }

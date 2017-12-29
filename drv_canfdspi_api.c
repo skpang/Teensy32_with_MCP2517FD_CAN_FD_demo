@@ -2352,7 +2352,7 @@ int8_t DRV_CANFDSPI_EccDisable(CANFDSPI_MODULE_ID index)
     // Read
     spiTransferError = DRV_CANFDSPI_ReadByte(index, cREGADDR_ECCCON, &d);
     if (spiTransferError) {
-        return -1;
+       return -1;
     }
 
     // Modify
@@ -2641,7 +2641,7 @@ int8_t DRV_CANFDSPI_RamInit(CANFDSPI_MODULE_ID index, uint8_t d)
     for (k = 0; k < (cRAM_SIZE / SPI_DEFAULT_BUFFER_LENGTH); k++) {
         spiTransferError = DRV_CANFDSPI_WriteByteArray(index, a, txd, SPI_DEFAULT_BUFFER_LENGTH);
         if (spiTransferError) {
-            return -1;
+           // return -1;
         }
         a += SPI_DEFAULT_BUFFER_LENGTH;
     }
