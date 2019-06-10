@@ -34,7 +34,8 @@ Adafruit_SSD1306 display(OLED_RESET);
 
 
 void setup() {
- //pinMode(led, OUTPUT);   
+  pinMode(led, OUTPUT);   
+  digitalWrite(led,HIGH);
   delay(1000);
   display.begin(SSD1306_SWITCHCAPVCC, 0x3D);  // initialize with the I2C addr 0x3D (for the 128x64)
   display.display();
@@ -48,9 +49,10 @@ void setup() {
   display.println(" ");
   display.println(" 06/19");
   display.display();
-      
   Serial.println(F("CAN Bus Tx test"));
- 
+  
+  digitalWrite(led,LOW);
+  
   APP_CANFDSPI_Init(CAN_500K_2M);       // 500k arbitration rate and 2Mbps data rate
   // APP_CANFDSPI_Init(CAN_500K_4M);       // 500k arbitration rate and 4Mbps data rate
   // APP_CANFDSPI_Init(CAN_500K_8M);       // 500k arbitration rate and 8Mbps data rate
